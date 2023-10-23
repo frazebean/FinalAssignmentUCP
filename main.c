@@ -12,6 +12,8 @@ int main(int argc, char** argv)
     /* Declare the 'Map' struct. This stores a map 'object' in a sense. */
     Map map;
 
+    /* NOTE: The code within the borders below are all responsible for file IO. */
+    /* ---------------------------------------------------------------------------------------------- */
     /* First check if the number of command line arguments is correct. */
     if(argc != 2)
     {
@@ -56,9 +58,10 @@ int main(int argc, char** argv)
             {
                 perror("Error reading from source file\n");
             }
-            fclose(file);
         }
     }
+    fclose(file);
+    /* ---------------------------------------------------------------------------------------------- */
 
     return 0;
 }

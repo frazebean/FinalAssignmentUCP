@@ -59,26 +59,41 @@ void initialiseMap(Map map)
     {
         for(c = 0; c < map.mapColumn; c++)
         {
-            /* The value '0' is an empty space: ' ' */
+            /* The value '0' denotes an empty space: ' ' */
             if(map.intMapArray[r][c] == 0)
             {
-                map.charMapArray[r][c] = ' ';
+                map.emptySpace.symbol = ' ';
+                map.charMapArray[r][c] = map.emptySpace.symbol;
             }
+            /* The value '1' denotes a path: '.' */
             else if(map.intMapArray[r][c] == 1)
             {
-                map.charMapArray[r][c] = '.';
+                map.path.symbol = '.';
+                map.charMapArray[r][c] = map.path.symbol;
             }
+            /* The value '2' denotes the car: '>' */
             else if(map.intMapArray[r][c] == 2)
             {
-                map.charMapArray[r][c] = '>';
+                map.car.symbol = '>';
+                map.charMapArray[r][c] = map.car.symbol;
+                map.car.xPos = c;  /* The x-position is the position along the column. */
+                map.car.yPos = r;  /* The y-position is the position along the row. */
             }
+            /* The value '3' denotes the player: 'P' */
             else if(map.intMapArray[r][c] == 3)
             {
-                map.charMapArray[r][c] = 'P';
+                map.player.symbol = 'P';
+                map.charMapArray[r][c] = map.player.symbol;
+                map.player.xPos = c;  /* The x-position is the position along the column. */
+                map.player.yPos = r;  /* The y-position is the position along the row. */
             }
+            /* The value '4' denotes the goal: 'G' */
             else if(map.intMapArray[r][c] == 4)
             {
-                map.charMapArray[r][c] = 'G';
+                map.goal.symbol = 'G';
+                map.charMapArray[r][c] = map.goal.symbol;
+                map.goal.xPos = c;  /* The x-position is the position along the column. */
+                map.goal.yPos = r;  /* The y-position is the position along the row. */
             }
         }
     }
