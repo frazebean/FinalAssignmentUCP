@@ -7,6 +7,7 @@
 #include "constants.h"
 #include "terminal.h"
 #include "game_movement.h"
+#include "game_outcome.h"
 
 int main(int argc, char** argv)
 {
@@ -90,6 +91,8 @@ int main(int argc, char** argv)
         scanf(" %c", &userInput);
         enableBuffer();
 
+        /* Player and car movement code. */
+        /* ------------------------------------------------------------------------------ */
         if(userInput == 'w' || userInput == 's' || userInput == 'a' || userInput == 'd')
         {
             updateMap(map);
@@ -111,6 +114,25 @@ int main(int argc, char** argv)
         if(userInput == 'd')
         {
             movePlayerRight(map);
+        }
+        /* ------------------------------------------------------------------------------ */
+
+        /* Game outcome code. */
+        if(playerWins(map) == TRUE)
+        {
+            system("clear");
+            displayMap(map);
+
+            printf("You win!\n");
+            gameInProgress = FALSE;
+        }
+        else if(playerLoses(map) == TRUE)
+        {
+            system("clear");
+            displayMap(map);
+
+            printf("You lose!\n");
+            gameInProgress = FALSE;
         }
     }
 

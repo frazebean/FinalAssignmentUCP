@@ -38,6 +38,8 @@ typedef struct Car
 typedef struct Goal
 {
     char symbol;
+    int rowPos;
+    int colPos;
     
 } Goal;
 

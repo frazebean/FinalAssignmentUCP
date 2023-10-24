@@ -92,6 +92,8 @@ void initialiseMap(Map* map)
             {
                 map->goal->symbol = 'G';
                 map->charMapArray[r][c] = map->goal->symbol;
+                map->goal->rowPos = r;
+                map->goal->colPos = c;
             }
         }
     }
