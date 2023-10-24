@@ -11,7 +11,7 @@ void displayMap(Map* map)
     for(r = 0; r < map->mapRow; r++)
     {
         printf("*");  /* Displays the left border. */
-        for(c = 0; c < map->mapColumn; c++)
+        for(c = 0; c < map->mapCol; c++)
         {
             printf("%c", map->charMapArray[r][c]);
         }
@@ -27,7 +27,7 @@ void displayMap(Map* map)
 void displayTopBottomBorders(Map* map)
 {
     int c;
-    for(c = 0; c < (map->mapColumn+2); c++)
+    for(c = 0; c < (map->mapCol+2); c++)
     {
         printf("*");
     }

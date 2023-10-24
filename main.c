@@ -44,7 +44,7 @@ int main(int argc, char** argv)
         else
         {
             /* We read the first two integers, which denotes the map row and column. */
-            if(fscanf(file, "%d %d", &map->mapRow, &map->mapColumn) != 2)
+            if(fscanf(file, "%d %d", &map->mapRow, &map->mapCol) != 2)
             {
                 perror("Error reading data");
                 fileIOErrors++;
@@ -90,14 +90,27 @@ int main(int argc, char** argv)
         scanf(" %c", &userInput);
         enableBuffer();
 
-        if(userInput == 'w')
+        if(userInput == 'w' || userInput == 's' || userInput == 'a' || userInput == 'd')
         {
             updateMap(map);
-            /* Maybe put these in a function called movePlayerUp() */
-            map->player->rowPos = map->player->rowPos - 1;  /* Go one row higher (up) */
-            map->charMapArray[map->player->rowPos][map->player->colPos] = map->player->symbol;
+            moveCar(map);
+        }
 
-            /* After moving the player up, we also move the car to its relevant position. */
+        if(userInput == 'w')
+        {
+            movePlayerUp(map);
+        }
+        if(userInput == 's')
+        {
+            movePlayerDown(map);
+        }
+        if(userInput == 'a')
+        {
+            movePlayerLeft(map);
+        }
+        if(userInput == 'd')
+        {
+            movePlayerRight(map);
         }
     }
 

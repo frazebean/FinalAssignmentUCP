@@ -24,6 +24,14 @@ typedef struct Player
 typedef struct Car
 {
     char symbol;
+    int rowPos;
+    int colPos;
+    
+    /* The two variables below denote the row and column position in front of the car.
+       Example, if car is facing East '>' and its position is rowPos = 0, colPos = 0, then
+       frontRowPos = 0 and frontColPos = 1. */
+    int frontRowPos;
+    int frontColPos;
 
 } Car;
 
@@ -38,7 +46,7 @@ typedef struct Map
     int** intMapArray;
     char** charMapArray;
     int mapRow;
-    int mapColumn;
+    int mapCol;
 
     /* These are the characters in the map. */
     EmptySpace* emptySpace;

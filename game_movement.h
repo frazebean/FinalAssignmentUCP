@@ -5,4 +5,24 @@
 
 void updateMap(Map* map);
 
+void movePlayerUp(Map* map);
+void movePlayerDown(Map* map);
+void movePlayerLeft(Map* map);
+void movePlayerRight(Map* map);
+
+void moveCarFacingUp(Map* map);
+void moveCarFacingDown(Map* map);
+void moveCarFacingLeft(Map* map);
+void moveCarFacingRight(Map* map);
+
+void moveCarUp(Map* map);
+void moveCarDown(Map* map);
+void moveCarLeft(Map* map);
+void moveCarRight(Map* map);
+
+void moveCar(Map* map);
+
+int pathOnRight(Map* map);
+int pathOnLeft(Map* map);
+
 #endif

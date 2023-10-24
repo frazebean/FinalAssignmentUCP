@@ -13,7 +13,7 @@ void mallocIntMap(Map* map)
     for(r = 0; r < map->mapRow; r++)
     {
         /* Mallocs columns in each row of the 2D array. */
-        map->intMapArray[r] = (int*)malloc(sizeof(int) * map->mapColumn);
+        map->intMapArray[r] = (int*)malloc(sizeof(int) * map->mapCol);
     }
 }
 
@@ -22,7 +22,7 @@ void readRemainingData(FILE* file, Map* map)
     int r, c;
     for(r = 0; r < map->mapRow; r++)
     {
-        for(c = 0; c < map->mapColumn; c++)
+        for(c = 0; c < map->mapCol; c++)
         {
             /* Stores every integer from the file into the 2D array. */
             if(fscanf(file, "%d", &map->intMapArray[r][c]) != 1)
@@ -43,7 +43,7 @@ void mallocCharMap(Map* map)
     for(r = 0; r < map->mapRow; r++)
     {
         /* Mallocs columns in each row of the 2D array. */
-        map->charMapArray[r] = (char*)malloc(sizeof(char) * map->mapColumn);
+        map->charMapArray[r] = (char*)malloc(sizeof(char) * map->mapCol);
     }
 }
 
@@ -53,7 +53,7 @@ void initialiseMap(Map* map)
     int r, c;
     for(r = 0; r < map->mapRow; r++)
     {
-        for(c = 0; c < map->mapColumn; c++)
+        for(c = 0; c < map->mapCol; c++)
         {
             /* The value '0' denotes an empty space: ' ' */
             if(map->intMapArray[r][c] == 0)
@@ -72,6 +72,12 @@ void initialiseMap(Map* map)
             {
                 map->car->symbol = '>';
                 map->charMapArray[r][c] = map->car->symbol;
+                map->car->rowPos = r;
+                map->car->colPos = c;
+
+                /* Store position in front of car when always facing East initially. */
+                map->car->frontRowPos = r;
+                map->car->frontColPos = c + 1;
             }
             /* The value '3' denotes the player: 'P' */
             else if(map->intMapArray[r][c] == 3)
