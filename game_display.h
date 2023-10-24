@@ -3,7 +3,8 @@
 #ifndef GAME_DISPLAY_H
 #define GAME_DISPLAY_H
 
-void displayMap(Map map);
-void displayTopBottomBorders(Map map);
+void displayMap(Map* map);
+void displayTopBottomBorders(Map* map);
+void displayControls();
 
 #endif

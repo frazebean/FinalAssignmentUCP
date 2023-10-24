@@ -3,9 +3,9 @@
 #ifndef GAME_INITIALISATION_H
 #define GAME_INITIALISATION_H
 
-int** mallocIntMap(Map map);
-void readRemainingData(FILE* file, Map map);
-char** mallocCharMap(Map map);
-void initialiseMap(Map map);
+void mallocIntMap(Map* map);
+void readRemainingData(FILE* file, Map* map);
+void mallocCharMap(Map* map);
+void initialiseMap(Map* map);
 
 #endif

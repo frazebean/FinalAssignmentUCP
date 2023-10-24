@@ -16,24 +16,20 @@ typedef struct Path
 typedef struct Player
 {
     char symbol;
-    int xPos;  /* The x-axis (horizontal) position of the player. */
-    int yPos;  /* The y-axis (vertical) position of the player. */
+    int rowPos;
+    int colPos;
 
 } Player;
 
 typedef struct Car
 {
     char symbol;
-    int xPos;  /* The x-axis (horizontal) position of the car. */
-    int yPos;  /* The y-axis (vertical) position of the car. */
 
 } Car;
 
 typedef struct Goal
 {
     char symbol;
-    int xPos;  /* The x-axis (horizontal) position of the goal. */
-    int yPos;  /* The y-axis (vertical) position of the goal. */
     
 } Goal;
 
@@ -45,11 +41,11 @@ typedef struct Map
     int mapColumn;
 
     /* These are the characters in the map. */
-    EmptySpace emptySpace;
-    Path path;
-    Car car;
-    Player player;
-    Goal goal;
+    EmptySpace* emptySpace;
+    Path* path;
+    Car* car;
+    Player* player;
+    Goal* goal;
 
 } Map;
 
