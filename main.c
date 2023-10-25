@@ -8,6 +8,7 @@
 #include "terminal.h"
 #include "game_movement.h"
 #include "game_outcome.h"
+#include "linked_list.h"
 
 int main(int argc, char** argv)
 {
@@ -17,7 +18,12 @@ int main(int argc, char** argv)
     int gameInProgress = TRUE;
     char userInput;
 
-    /* Declare the 'Map' struct. This stores a map 'object' in a sense. */
+    LinkedList* playerRowPosList = createLinkedList();
+    LinkedList* playerColPosList = createLinkedList();
+    LinkedList* carRowPosList = createLinkedList();
+    LinkedList* carColPosList = createLinkedList();
+    LinkedList* carSymbolList = createLinkedList();
+
     Map* map = (Map*)malloc(sizeof(Map));
     map->emptySpace = (EmptySpace*)malloc(sizeof(EmptySpace));
     map->path = (Path*)malloc(sizeof(Path));
@@ -79,6 +85,12 @@ int main(int argc, char** argv)
     /* NOTE: The code within the borders below are responsible for the main game. */
     /* ---------------------------------------------------------------------------------------------- */
     /* The game only starts when the number of errors in the file reading is zero. */
+    updateCarRowPos(map, carRowPosList);
+    updateCarColPos(map, carColPosList);
+    updateCarSymbol(map, carSymbolList);
+    updatePlayerRowPos(map, playerRowPosList);
+    updatePlayerColPos(map, playerColPosList);
+
     while((gameInProgress) && (fileIOErrors == 0))
     {
         /* Clear the terminal. */
@@ -97,23 +109,61 @@ int main(int argc, char** argv)
         {
             updateMap(map);
             moveCar(map);
+
+            updateCarRowPos(map, carRowPosList);
+            updateCarColPos(map, carColPosList);
+            updateCarSymbol(map, carSymbolList);
         }
 
         if(userInput == 'w')
         {
             movePlayerUp(map);
+
+            updatePlayerRowPos(map, playerRowPosList);
+            updatePlayerColPos(map, playerColPosList);
+
+            printLinkedList(playerRowPosList, &printInt);
         }
-        if(userInput == 's')
+        else if(userInput == 's')
         {
             movePlayerDown(map);
+
+            updatePlayerRowPos(map, playerRowPosList);
+            updatePlayerColPos(map, playerColPosList);
         }
-        if(userInput == 'a')
+        else if(userInput == 'a')
         {
             movePlayerLeft(map);
+
+            updatePlayerRowPos(map, playerRowPosList);
+            updatePlayerColPos(map, playerColPosList);
         }
-        if(userInput == 'd')
+        else if(userInput == 'd')
         {
             movePlayerRight(map);
+
+            updatePlayerRowPos(map, playerRowPosList);
+            updatePlayerColPos(map, playerColPosList);
+        }
+        else if(userInput == 'u')
+        {
+            /* Every time a player undos, the current map is removed, reverting to the previous map. */
+            removeFirst(playerRowPosList);
+            map->player->rowPos = *((int*)playerRowPosList->head->data);
+
+            removeFirst(playerColPosList);
+            map->player->colPos = *((int*)playerColPosList->head->data);
+
+            removeFirst(carRowPosList);
+            map->car->rowPos = *((int*)carRowPosList->head->data);
+
+            removeFirst(carColPosList);
+            map->car->colPos = *((int*)carColPosList->head->data);
+
+            removeFirst(carSymbolList);
+            map->car->symbol = *((char*)carSymbolList->head->data);
+
+            revertMap(map);
         }
         /* ------------------------------------------------------------------------------ */
 

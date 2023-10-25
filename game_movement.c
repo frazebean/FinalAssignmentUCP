@@ -3,7 +3,9 @@
 #include "map_struct.h"
 #include "game_movement.h"
 #include "constants.h"
+#include "linked_list.h"
 
+/* Updates the map whenever player moves by pressing 'w', 's', 'a' or 'd'. */
 void updateMap(Map* map)
 {
     int r, c;
@@ -42,6 +44,16 @@ void updateMap(Map* map)
             }
         }
     }
+}
+void revertMap(Map* map)
+{
+    updateMap(map);
+
+    /* Revert the position of the player. */
+    map->charMapArray[map->player->rowPos][map->player->colPos] = map->player->symbol;
+
+    /* Revert the position of the car. */
+    map->charMapArray[map->car->rowPos][map->car->colPos] = map->car->symbol;
 }
 
 /* ---------------------------------------------------------------------------------------------- */
@@ -216,7 +228,7 @@ void moveCarLeft(Map* map)
     map->charMapArray[map->car->rowPos][map->car->colPos] = map->car->symbol;
 
     map->car->frontRowPos = map->car->rowPos;
-    map->car->frontColPos = map->car->colPos + -1;
+    map->car->frontColPos = map->car->colPos - 1;
 }
 void moveCarRight(Map* map)
 {
@@ -254,7 +266,8 @@ void moveCar(Map* map)
 }
 /* ---------------------------------------- */
 
-/* Function that returns true if there is a path to the right of the car. */
+/* Functions that return true if there is a path to the right or left of the car. */
+/* ----------------------------------------------------------------------------------------------- */
 int pathOnRight(Map* map)
 {
     int rightPathExists = FALSE;
@@ -322,4 +335,49 @@ int pathOnLeft(Map* map)
         }
     }
     return leftPathExists;
+}
+/* ----------------------------------------------------------------------------------------------- */
+
+/* This function updates the game state. In other words, it coordinates all linked lists to store
+   updated player/car positions, as well as the car direction. */
+
+void updatePlayerRowPos(Map* map, LinkedList* playerRowPosList)
+{
+    int* playerRowPos;
+
+    playerRowPos = (int*)malloc(sizeof(int));
+    *playerRowPos = map->player->rowPos;
+    insertFirst((void*)playerRowPos, playerRowPosList);
+}
+void updatePlayerColPos(Map* map, LinkedList* playerColPosList)
+{
+    int* playerColPos;
+
+    playerColPos = (int*)malloc(sizeof(int));
+    *playerColPos = map->player->colPos;
+    insertFirst((void*)playerColPos, playerColPosList);
+}
+void updateCarRowPos(Map* map, LinkedList* carRowPosList)
+{
+    int* carRowPos;
+
+    carRowPos = (int*)malloc(sizeof(int));
+    *carRowPos = map->car->rowPos;
+    insertFirst((void*)carRowPos, carRowPosList);
+}
+void updateCarColPos(Map* map, LinkedList* carColPosList)
+{
+    int* carColPos;
+
+    carColPos = (int*)malloc(sizeof(int));
+    *carColPos = map->car->colPos;
+    insertFirst((void*)carColPos, carColPosList);
+}
+void updateCarSymbol(Map* map, LinkedList* carSymbolList)
+{
+    char* carSymbol;
+
+    carSymbol = (char*)malloc(sizeof(char));
+    *carSymbol = map->car->symbol;
+    insertFirst((void*)carSymbol, carSymbolList);
 }
