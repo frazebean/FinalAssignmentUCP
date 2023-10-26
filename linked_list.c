@@ -39,26 +39,29 @@ void* removeFirst(LinkedList* list)
     return tempData;
 }
 
-void printInt(void* data)
+int length(LinkedList* list)
 {
-    /* Typecast to proper type. */
-    int* d = (int*)data;
-    printf("%d ", *d);
-}
-void printLinkedList(LinkedList* list, FunctionPointer fp)
-{
+    int length = 0;
     LLNode* currentNode = list->head;
 
     while(currentNode != NULL)
     {
-        fp(currentNode->data);
+        length++;
         currentNode = currentNode->next;
     }
-    printf("\n");
+
+    return length;
 }
 
 void freeInt(void* data) 
 {
+    int* d = (int*)data;
+    free(d);
+}
+void freeChar(void* data)
+{
+    char* d = (char*)data;
+    free(d);
 }
 
 void freeLinkedList(LinkedList* list, FunctionPointer fp) {

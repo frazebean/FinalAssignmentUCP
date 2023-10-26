@@ -23,6 +23,8 @@ int main(int argc, char** argv)
     LinkedList* carRowPosList = createLinkedList();
     LinkedList* carColPosList = createLinkedList();
     LinkedList* carSymbolList = createLinkedList();
+    LinkedList* carFrontRowPosList = createLinkedList();
+    LinkedList* carFrontColPosList = createLinkedList();
 
     Map* map = (Map*)malloc(sizeof(Map));
     map->emptySpace = (EmptySpace*)malloc(sizeof(EmptySpace));
@@ -88,6 +90,9 @@ int main(int argc, char** argv)
     updateCarRowPos(map, carRowPosList);
     updateCarColPos(map, carColPosList);
     updateCarSymbol(map, carSymbolList);
+    updateCarFrontRowPos(map, carFrontRowPosList);
+    updateCarFrontColPos(map, carFrontColPosList);
+
     updatePlayerRowPos(map, playerRowPosList);
     updatePlayerColPos(map, playerColPosList);
 
@@ -113,6 +118,8 @@ int main(int argc, char** argv)
             updateCarRowPos(map, carRowPosList);
             updateCarColPos(map, carColPosList);
             updateCarSymbol(map, carSymbolList);
+            updateCarFrontRowPos(map, carFrontRowPosList);
+            updateCarFrontColPos(map, carFrontColPosList);
         }
 
         if(userInput == 'w')
@@ -121,8 +128,6 @@ int main(int argc, char** argv)
 
             updatePlayerRowPos(map, playerRowPosList);
             updatePlayerColPos(map, playerColPosList);
-
-            printLinkedList(playerRowPosList, &printInt);
         }
         else if(userInput == 's')
         {
@@ -147,23 +152,36 @@ int main(int argc, char** argv)
         }
         else if(userInput == 'u')
         {
+            /* Before undoing, we must check that all linked list length are not 1. (This is
+               because players are not allowed to undo at the beginning state of the game.) */
             /* Every time a player undos, the current map is removed, reverting to the previous map. */
-            removeFirst(playerRowPosList);
-            map->player->rowPos = *((int*)playerRowPosList->head->data);
+            if(length(playerRowPosList) != 1 && length(playerColPosList) != 1 && length(carRowPosList) != 1
+            && length(carColPosList) != 1 && length(carSymbolList) != 1 && length(carFrontRowPosList) != 1
+            && length(carFrontColPosList) != 1) 
+            {
+                removeFirst(playerRowPosList);
+                map->player->rowPos = *((int*)playerRowPosList->head->data);
 
-            removeFirst(playerColPosList);
-            map->player->colPos = *((int*)playerColPosList->head->data);
+                removeFirst(playerColPosList);
+                map->player->colPos = *((int*)playerColPosList->head->data);
 
-            removeFirst(carRowPosList);
-            map->car->rowPos = *((int*)carRowPosList->head->data);
+                removeFirst(carRowPosList);
+                map->car->rowPos = *((int*)carRowPosList->head->data);
 
-            removeFirst(carColPosList);
-            map->car->colPos = *((int*)carColPosList->head->data);
+                removeFirst(carColPosList);
+                map->car->colPos = *((int*)carColPosList->head->data);
 
-            removeFirst(carSymbolList);
-            map->car->symbol = *((char*)carSymbolList->head->data);
+                removeFirst(carSymbolList);
+                map->car->symbol = *((char*)carSymbolList->head->data);
 
-            revertMap(map);
+                removeFirst(carFrontRowPosList);
+                map->car->frontRowPos = *((int*)carFrontRowPosList->head->data);
+
+                removeFirst(carFrontColPosList);
+                map->car->frontColPos = *((int*)carFrontColPosList->head->data);
+
+                revertMap(map);
+            }
         }
         /* ------------------------------------------------------------------------------ */
 
@@ -185,6 +203,25 @@ int main(int argc, char** argv)
             gameInProgress = FALSE;
         }
     }
+
+    /* Free the linked lists. */
+    freeLinkedList(playerRowPosList, &freeInt);
+    freeLinkedList(playerColPosList, &freeInt);
+    freeLinkedList(carRowPosList, &freeInt);
+    freeLinkedList(carColPosList, &freeInt);
+    freeLinkedList(carSymbolList, &freeChar);
+    freeLinkedList(carFrontRowPosList, &freeInt);
+    freeLinkedList(carFrontColPosList, &freeInt);
+
+    /* Free everything else. */
+    freeIntMap(map);
+    freeCharMap(map);
+    free(map->emptySpace);
+    free(map->path);
+    free(map->car);
+    free(map->player);
+    free(map->goal);
+    free(map);
 
     return 0;
 }

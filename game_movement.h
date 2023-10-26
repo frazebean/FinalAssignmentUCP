@@ -32,5 +32,7 @@ void updatePlayerColPos(Map* map, LinkedList* playerColPosList);
 void updateCarRowPos(Map* map, LinkedList* carRowPosList);
 void updateCarColPos(Map* map, LinkedList* carColPosList);
 void updateCarSymbol(Map* map, LinkedList* carSymbolList);
+void updateCarFrontRowPos(Map* map, LinkedList* carFrontRowPosList);
+void updateCarFrontColPos(Map* map, LinkedList* carFrontColPosList);
 
 #endif

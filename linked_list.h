@@ -19,11 +19,10 @@ LinkedList* createLinkedList();
 
 void insertFirst(void* data, LinkedList* list);
 void* removeFirst(LinkedList* list);
-
-void printInt(void* data);
-void printLinkedList(LinkedList* list, FunctionPointer fp);
+int length(LinkedList* list);
 
 void freeInt(void* data);
+void freeChar(void* data);
 void freeLinkedList(LinkedList* list, FunctionPointer fp);
 
 #endif

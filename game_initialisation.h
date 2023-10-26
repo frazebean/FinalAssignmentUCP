@@ -4,8 +4,10 @@
 #define GAME_INITIALISATION_H
 
 void mallocIntMap(Map* map);
+void freeIntMap(Map* map);
 void readRemainingData(FILE* file, Map* map);
 void mallocCharMap(Map* map);
+void freeCharMap(Map* map);
 void initialiseMap(Map* map);
 
 #endif

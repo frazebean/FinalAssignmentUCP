@@ -381,3 +381,19 @@ void updateCarSymbol(Map* map, LinkedList* carSymbolList)
     *carSymbol = map->car->symbol;
     insertFirst((void*)carSymbol, carSymbolList);
 }
+void updateCarFrontRowPos(Map* map, LinkedList* carFrontRowPosList)
+{
+    int* carFrontRowPos;
+
+    carFrontRowPos = (int*)malloc(sizeof(int));
+    *carFrontRowPos = map->car->frontRowPos;
+    insertFirst((void*)carFrontRowPos, carFrontRowPosList);
+}
+void updateCarFrontColPos(Map* map, LinkedList* carFrontColPosList)
+{
+    int* carFrontColPos;
+
+    carFrontColPos = (int*)malloc(sizeof(int));
+    *carFrontColPos = map->car->frontColPos;
+    insertFirst((void*)carFrontColPos, carFrontColPosList);
+}

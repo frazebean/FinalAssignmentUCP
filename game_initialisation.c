@@ -16,6 +16,17 @@ void mallocIntMap(Map* map)
         map->intMapArray[r] = (int*)malloc(sizeof(int) * map->mapCol);
     }
 }
+void freeIntMap(Map* map)
+{
+    int r;
+
+    for(r = 0; r < map->mapRow; r++)
+    {
+        /* Free each column in the integer map. */
+        free(map->intMapArray[r]);
+    }
+    free(map->intMapArray);
+}
 
 void readRemainingData(FILE* file, Map* map)
 {
@@ -45,6 +56,16 @@ void mallocCharMap(Map* map)
         /* Mallocs columns in each row of the 2D array. */
         map->charMapArray[r] = (char*)malloc(sizeof(char) * map->mapCol);
     }
+}
+void freeCharMap(Map* map)
+{
+    int r;
+
+    for(r = 0; r < map->mapRow; r++)
+    {
+        free(map->charMapArray[r]);
+    }
+    free(map->charMapArray);
 }
 
 /* Initialise the actual map with characters. */
