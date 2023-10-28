@@ -338,62 +338,56 @@ int pathOnLeft(Map* map)
 }
 /* ----------------------------------------------------------------------------------------------- */
 
-/* This function updates the game state. In other words, it coordinates all linked lists to store
-   updated player/car positions, as well as the car direction. */
+/* This function updates the game state by storing any relevant updated data into the gameStateList
+   linked list. */
 
-void updatePlayerRowPos(Map* map, LinkedList* playerRowPosList)
+void updateGameState(Map* map, LinkedList* gameStateList)
 {
+    GameState* gameState = (GameState*)malloc(sizeof(GameState));
+
     int* playerRowPos;
+    int* playerColPos;
+    int* carRowPos;
+    int* carColPos;
+    char* carSymbol;
+    int* carFrontRowPos;
+    int* carFrontColPos;
 
     playerRowPos = (int*)malloc(sizeof(int));
     *playerRowPos = map->player->rowPos;
-    insertFirst((void*)playerRowPos, playerRowPosList);
-}
-void updatePlayerColPos(Map* map, LinkedList* playerColPosList)
-{
-    int* playerColPos;
+    gameState->playerRowPos = *playerRowPos;
 
     playerColPos = (int*)malloc(sizeof(int));
     *playerColPos = map->player->colPos;
-    insertFirst((void*)playerColPos, playerColPosList);
-}
-void updateCarRowPos(Map* map, LinkedList* carRowPosList)
-{
-    int* carRowPos;
+    gameState->playerColPos = *playerColPos;
 
     carRowPos = (int*)malloc(sizeof(int));
     *carRowPos = map->car->rowPos;
-    insertFirst((void*)carRowPos, carRowPosList);
-}
-void updateCarColPos(Map* map, LinkedList* carColPosList)
-{
-    int* carColPos;
+    gameState->carRowPos = *carRowPos;
 
     carColPos = (int*)malloc(sizeof(int));
     *carColPos = map->car->colPos;
-    insertFirst((void*)carColPos, carColPosList);
-}
-void updateCarSymbol(Map* map, LinkedList* carSymbolList)
-{
-    char* carSymbol;
+    gameState->carColPos = *carColPos;
 
     carSymbol = (char*)malloc(sizeof(char));
     *carSymbol = map->car->symbol;
-    insertFirst((void*)carSymbol, carSymbolList);
-}
-void updateCarFrontRowPos(Map* map, LinkedList* carFrontRowPosList)
-{
-    int* carFrontRowPos;
+    gameState->carSymbol = *carSymbol;
 
     carFrontRowPos = (int*)malloc(sizeof(int));
     *carFrontRowPos = map->car->frontRowPos;
-    insertFirst((void*)carFrontRowPos, carFrontRowPosList);
-}
-void updateCarFrontColPos(Map* map, LinkedList* carFrontColPosList)
-{
-    int* carFrontColPos;
+    gameState->carFrontRowPos = *carFrontRowPos;
 
     carFrontColPos = (int*)malloc(sizeof(int));
     *carFrontColPos = map->car->frontColPos;
-    insertFirst((void*)carFrontColPos, carFrontColPosList);
+    gameState->carFrontColPos = *carFrontColPos;
+
+    insertFirst((void*)gameState, gameStateList);
+
+    free(playerRowPos);
+    free(playerColPos);
+    free(carRowPos);
+    free(carColPos);
+    free(carSymbol);
+    free(carFrontRowPos);
+    free(carFrontColPos);
 }

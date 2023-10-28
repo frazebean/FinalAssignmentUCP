@@ -59,4 +59,20 @@ typedef struct Map
 
 } Map;
 
+/* This struct is used to store the game state every time the player and car changes position,
+   as well as the car changing direction. */
+typedef struct GameState
+{
+    int playerRowPos;
+    int playerColPos;
+    
+    int carRowPos;
+    int carColPos;
+    int carFrontRowPos;
+    int carFrontColPos;
+
+    char carSymbol;
+
+} GameState;
+
 #endif

@@ -22,7 +22,7 @@ void* removeFirst(LinkedList* list);
 int length(LinkedList* list);
 
 void freeInt(void* data);
-void freeChar(void* data);
+void freeGameState(void* data);
 void freeLinkedList(LinkedList* list, FunctionPointer fp);
 
 #endif

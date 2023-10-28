@@ -18,13 +18,10 @@ int main(int argc, char** argv)
     int gameInProgress = TRUE;
     char userInput;
 
-    LinkedList* playerRowPosList = createLinkedList();
-    LinkedList* playerColPosList = createLinkedList();
-    LinkedList* carRowPosList = createLinkedList();
-    LinkedList* carColPosList = createLinkedList();
-    LinkedList* carSymbolList = createLinkedList();
-    LinkedList* carFrontRowPosList = createLinkedList();
-    LinkedList* carFrontColPosList = createLinkedList();
+    /* Stores a list of the updated game state. */
+    LinkedList* gameStateList = createLinkedList();
+
+    void* removedGameState;
 
     Map* map = (Map*)malloc(sizeof(Map));
     map->emptySpace = (EmptySpace*)malloc(sizeof(EmptySpace));
@@ -87,14 +84,7 @@ int main(int argc, char** argv)
     /* NOTE: The code within the borders below are responsible for the main game. */
     /* ---------------------------------------------------------------------------------------------- */
     /* The game only starts when the number of errors in the file reading is zero. */
-    updateCarRowPos(map, carRowPosList);
-    updateCarColPos(map, carColPosList);
-    updateCarSymbol(map, carSymbolList);
-    updateCarFrontRowPos(map, carFrontRowPosList);
-    updateCarFrontColPos(map, carFrontColPosList);
-
-    updatePlayerRowPos(map, playerRowPosList);
-    updatePlayerColPos(map, playerColPosList);
+    updateGameState(map, gameStateList);  /* Initial game state is stored in linked list. */
 
     while((gameInProgress) && (fileIOErrors == 0))
     {
@@ -114,71 +104,44 @@ int main(int argc, char** argv)
         {
             updateMap(map);
             moveCar(map);
-
-            updateCarRowPos(map, carRowPosList);
-            updateCarColPos(map, carColPosList);
-            updateCarSymbol(map, carSymbolList);
-            updateCarFrontRowPos(map, carFrontRowPosList);
-            updateCarFrontColPos(map, carFrontColPosList);
         }
 
         if(userInput == 'w')
         {
             movePlayerUp(map);
-
-            updatePlayerRowPos(map, playerRowPosList);
-            updatePlayerColPos(map, playerColPosList);
+            updateGameState(map, gameStateList);  /* Game state is updated by storing in linked list. */
         }
         else if(userInput == 's')
         {
             movePlayerDown(map);
-
-            updatePlayerRowPos(map, playerRowPosList);
-            updatePlayerColPos(map, playerColPosList);
+            updateGameState(map, gameStateList);  /* Game state is updated by storing in linked list. */
         }
         else if(userInput == 'a')
         {
             movePlayerLeft(map);
-
-            updatePlayerRowPos(map, playerRowPosList);
-            updatePlayerColPos(map, playerColPosList);
+            updateGameState(map, gameStateList);  /* Game state is updated by storing in linked list. */
         }
         else if(userInput == 'd')
         {
             movePlayerRight(map);
-
-            updatePlayerRowPos(map, playerRowPosList);
-            updatePlayerColPos(map, playerColPosList);
-        }
+            updateGameState(map, gameStateList);  /* Game state is updated by storing in linked list. */
+        } 
         else if(userInput == 'u')
         {
-            /* Before undoing, we must check that all linked list length are not 1. (This is
-               because players are not allowed to undo at the beginning state of the game.) */
-            /* Every time a player undos, the current map is removed, reverting to the previous map. */
-            if(length(playerRowPosList) != 1 && length(playerColPosList) != 1 && length(carRowPosList) != 1
-            && length(carColPosList) != 1 && length(carSymbolList) != 1 && length(carFrontRowPosList) != 1
-            && length(carFrontColPosList) != 1) 
+            /* Before undoing, we check that the linked list is not size 1 (beginning of the game) */
+            if(length(gameStateList) != 1) 
             {
-                removeFirst(playerRowPosList);
-                map->player->rowPos = *((int*)playerRowPosList->head->data);
+                /* Most recent game state removed is stored in a variable so it can be freed. */
+                removedGameState = removeFirst(gameStateList);
+                free(removedGameState);
 
-                removeFirst(playerColPosList);
-                map->player->colPos = *((int*)playerColPosList->head->data);
-
-                removeFirst(carRowPosList);
-                map->car->rowPos = *((int*)carRowPosList->head->data);
-
-                removeFirst(carColPosList);
-                map->car->colPos = *((int*)carColPosList->head->data);
-
-                removeFirst(carSymbolList);
-                map->car->symbol = *((char*)carSymbolList->head->data);
-
-                removeFirst(carFrontRowPosList);
-                map->car->frontRowPos = *((int*)carFrontRowPosList->head->data);
-
-                removeFirst(carFrontColPosList);
-                map->car->frontColPos = *((int*)carFrontColPosList->head->data);
+                map->player->rowPos = ((GameState*)gameStateList->head->data)->playerRowPos;
+                map->player->colPos = ((GameState*)gameStateList->head->data)->playerColPos;
+                map->car->rowPos = ((GameState*)gameStateList->head->data)->carRowPos;
+                map->car->colPos = ((GameState*)gameStateList->head->data)->carColPos;
+                map->car->symbol = ((GameState*)gameStateList->head->data)->carSymbol;
+                map->car->frontRowPos = ((GameState*)gameStateList->head->data)->carFrontRowPos;
+                map->car->frontColPos = ((GameState*)gameStateList->head->data)->carFrontColPos;
 
                 revertMap(map);
             }
@@ -204,14 +167,8 @@ int main(int argc, char** argv)
         }
     }
 
-    /* Free the linked lists. */
-    freeLinkedList(playerRowPosList, &freeInt);
-    freeLinkedList(playerColPosList, &freeInt);
-    freeLinkedList(carRowPosList, &freeInt);
-    freeLinkedList(carColPosList, &freeInt);
-    freeLinkedList(carSymbolList, &freeChar);
-    freeLinkedList(carFrontRowPosList, &freeInt);
-    freeLinkedList(carFrontColPosList, &freeInt);
+    /* Free the linked list. */
+    freeLinkedList(gameStateList, &freeGameState);
 
     /* Free everything else. */
     freeIntMap(map);

@@ -27,12 +27,6 @@ void moveCar(Map* map);
 int pathOnRight(Map* map);
 int pathOnLeft(Map* map);
 
-void updatePlayerRowPos(Map* map, LinkedList* playerRowPosList);
-void updatePlayerColPos(Map* map, LinkedList* playerColPosList);
-void updateCarRowPos(Map* map, LinkedList* carRowPosList);
-void updateCarColPos(Map* map, LinkedList* carColPosList);
-void updateCarSymbol(Map* map, LinkedList* carSymbolList);
-void updateCarFrontRowPos(Map* map, LinkedList* carFrontRowPosList);
-void updateCarFrontColPos(Map* map, LinkedList* carFrontColPosList);
+void updateGameState(Map* map, LinkedList* gameStateList);
 
 #endif

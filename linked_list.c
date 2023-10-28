@@ -25,7 +25,7 @@ void insertFirst(void* data, LinkedList* list)
 void* removeFirst(LinkedList* list)
 {
     void* tempData = NULL;
-    LLNode* tempNode = (LLNode*)malloc(sizeof(LLNode));
+    LLNode* tempNode;
 
     if(list->head != NULL)
     {
@@ -53,7 +53,7 @@ int length(LinkedList* list)
     return length;
 }
 
-void freeInt(void* data) 
+void freeInt(void* data)
 {
     int* d = (int*)data;
     free(d);
@@ -61,6 +61,13 @@ void freeInt(void* data)
 void freeChar(void* data)
 {
     char* d = (char*)data;
+    free(d);
+}
+
+void freeGameState(void* data) 
+{
+    GameState* d = (GameState*)data;
+
     free(d);
 }
 
